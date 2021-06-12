@@ -2,19 +2,16 @@ import unittest
 import os
 
 from appium import webdriver
-from locators import GeneralLocators
-from locators import RegisterPageLocators
-from locators import LoginPageLocators
-from locators import HomePageLocators
+from locators import GeneralLocators, RegisterPageLocators, LoginPageLocators, HomePageLocators
 from data_for_testing import Data
 
 
-PATH = lambda p: os.path.abspath(
-    os.path.join(os.path.dirname(__file__), p)
-)
-
+PATH = lambda p: os.path.abspath(os.path.join(os.path.dirname(__file__), p))
+Cookie loginCookie = driver.manage().getCookieNamed("PHPSESSID")
 
 class TestRememberTheMilk(unittest.TestCase):
+
+
     def setUp(self):
         desired_caps = {}
         desired_caps['app'] = PATH('RememberTheMilk.apk')
@@ -23,10 +20,9 @@ class TestRememberTheMilk(unittest.TestCase):
         desired_caps['udid'] = 'localhost:10000'
         desired_caps['appPackage'] = 'com.rememberthemilk.MobileRTM'
         desired_caps['appActivity'] = 'com.rememberthemilk.MobileRTM.Activities.RTMWelcomeActivity'
-        desired_caps['noReset'] = 'true' #zeby zapisywalo zmiany
-        desired_caps['fullReset'] = 'false'
+        desired_caps['noReset'] = 'true'  # zeby zapisywalo zmiany
 
-        # polaczenie z Appium
+        # connect with Appium
         self.driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
         self.driver.implicitly_wait(2)
 
@@ -38,7 +34,7 @@ class TestRememberTheMilk(unittest.TestCase):
         self.driver.is_app_installed(GeneralLocators.REMEMBER_THE_MILK_APP)
         #click skip button if displayed
         list = self.driver.find_elements_by_id(GeneralLocators.SKIPP_BUTTON)
-        if len(list)>0:
+        if len(list) > 0:
             list[0].click()
 
         #click sign in button
@@ -47,7 +43,7 @@ class TestRememberTheMilk(unittest.TestCase):
         #Data input
         el = self.driver.find_element_by_id(RegisterPageLocators.NAME_INPUT)
         el.send_keys(Data.NAME)
-        el= self.driver.find_element_by_id(RegisterPageLocators.SURNAME_INPUT)
+        el = self.driver.find_element_by_id(RegisterPageLocators.SURNAME_INPUT)
         el.send_keys(Data.SURNAME)
         el = self.driver.find_element_by_id(RegisterPageLocators.EMAIL_INPUT)
         el.send_keys(Data.EMAIL)
